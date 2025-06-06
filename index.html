@@ -1,81 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Filename Generator</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      padding: 2em;
+      font-family: sans-serif;
       max-width: 500px;
-      margin: auto;
-      background-color: #f4f4f4;
+      margin: 2rem auto;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
     }
     label {
       display: block;
-      margin-top: 1em;
+      margin: 0.5rem 0 0.2rem;
     }
     input {
       width: 100%;
-      padding: 0.5em;
-      margin-top: 0.25em;
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
     }
     button {
-      margin-top: 1.5em;
-      padding: 0.5em 1em;
-      font-size: 1em;
-      cursor: pointer;
-    }
-    #result {
-      margin-top: 2em;
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
       font-weight: bold;
-      background: #fff;
-      padding: 1em;
-      border-radius: 5px;
+    }
+    #filename {
+      margin-top: 1rem;
+      font-family: monospace;
+      font-size: 1.1rem;
+      background: #f4f4f4;
+      padding: 0.5rem;
+      border-radius: 4px;
     }
   </style>
 </head>
 <body>
+  <h2>Filename Generator</h2>
 
-  <h1>Filename Generator</h1>
+  <label for="episode">Episode (4 digits):</label>
+  <input type="text" id="episode" maxlength="4" />
 
-  <label for="episode">Episode (4-digit number):</label>
-  <input type="text" id="episode" maxlength="4" placeholder="e.g. 0123">
+  <label for="scene">Scene (2 digits):</label>
+  <input type="text" id="scene" maxlength="2" />
 
-  <label for="scene">Scene (2-digit number):</label>
-  <input type="text" id="scene" maxlength="2" placeholder="e.g. 07">
-
-  <label for="description">Description (no spaces, capitalized):</label>
-  <input type="text" id="description" placeholder="e.g. Yellow Submarine">
+  <label for="description">Description (no spaces):</label>
+  <input type="text" id="description" />
 
   <label for="id">Initials (2 letters):</label>
-  <input type="text" id="id" maxlength="2" placeholder="e.g. AD" value="ID">
+  <input type="text" id="id" maxlength="2" placeholder="ID" />
 
-  <label for="version">Version (e.g. v01):</label>
-  <input type="text" id="version" value="v01">
+  <label for="version">Version:</label>
+  <input type="text" id="version" value="v01" />
 
   <button onclick="generateFilename()">Generate Filename</button>
-
-  <div id="result"></div>
+  <div id="filename"></div>
+  <button onclick="copyFilename()">📋 Copy to Clipboard</button>
 
   <script>
+    function capitalizeWords(str) {
+      return str
+        .split(/[\s_-]+/)
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join('');
+    }
+
+    function padScene(scene) {
+      return scene.padStart(2, '0');
+    }
+
     function generateFilename() {
       const episode = document.getElementById('episode').value.trim();
-      const scene = document.getElementById('scene').value.trim();
+      const scene = padScene(document.getElementById('scene').value.trim());
       const rawDescription = document.getElementById('description').value.trim();
-      const id = document.getElementById('id').value.trim().toUpperCase();
-      const version = document.getElementById('version').value.trim().toLowerCase();
+      const description = capitalizeWords(rawDescription);
+      const id = document.getElementById('id').value.trim().toUpperCase() || "ID";
+      const version = document.getElementById('version').value.trim();
 
-      // Capitalize each word in the description and remove spaces
-      const description = rawDescription
-        .split(/\s+/)
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-        .join('');
+      if (!episode || !scene || !description || !version) {
+        document.getElementById('filename').textContent = "Please fill in all fields.";
+        return;
+      }
 
       const filename = `${episode}_sc${scene}_${description}_${id}${version}`;
-      document.getElementById('result').textContent = `Filename: ${filename}`;
+      document.getElementById('filename').textContent = filename;
+    }
+
+    function copyFilename() {
+      const text = document.getElementById('filename').textContent;
+      if (!text || text.includes("Please fill in")) return;
+
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Filename copied to clipboard!");
+      });
     }
   </script>
-
 </body>
 </html>
