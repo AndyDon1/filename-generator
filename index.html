@@ -1,110 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>Filename Generator</title>
   <style>
     body {
-      font-family: sans-serif;
-      max-width: 600px;
-      margin: 40px auto;
-      padding: 20px;
-      background: #f8f8f8;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      font-family: Arial, sans-serif;
+      padding: 2em;
+      max-width: 500px;
+      margin: auto;
+      background-color: #f4f4f4;
     }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
     label {
       display: block;
-      margin-top: 10px;
-      font-weight: bold;
+      margin-top: 1em;
     }
-
     input {
       width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
+      padding: 0.5em;
+      margin-top: 0.25em;
     }
-
-    #output {
-      margin-top: 20px;
-      font-size: 18px;
-      font-weight: bold;
-      background: #fff;
-      padding: 10px;
-      border: 1px dashed #888;
-      border-radius: 5px;
-      text-align: center;
-    }
-
     button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 5px;
-      background: #007acc;
-      color: white;
-      border: none;
+      margin-top: 1.5em;
+      padding: 0.5em 1em;
+      font-size: 1em;
       cursor: pointer;
     }
-
-    button:hover {
-      background: #005fa3;
+    #result {
+      margin-top: 2em;
+      font-weight: bold;
+      background: #fff;
+      padding: 1em;
+      border-radius: 5px;
     }
   </style>
 </head>
 <body>
-  <h2>Filename Generator</h2>
-  <form id="nameForm">
-    <label for="episode">Episode Number (4 digits)</label>
-    <input type="text" id="episode" maxlength="4" required />
 
-    <label for="scene">Scene Number (2 digits)</label>
-    <input type="text" id="scene" maxlength="2" required />
+  <h1>Filename Generator</h1>
 
-    <label for="description">Description (no spaces, capitalized)</label>
-    <input type="text" id="description" required />
+  <label for="episode">Episode (4-digit number):</label>
+  <input type="text" id="episode" maxlength="4" placeholder="e.g. 0123">
 
-    <label for="id">Initials</label>
-    <input type="text" id="id" maxlength="2" value="ID" required />
+  <label for="scene">Scene (2-digit number):</label>
+  <input type="text" id="scene" maxlength="2" placeholder="e.g. 07">
 
-    <label for="version">Version (e.g. v01)</label>
-    <input type="text" id="version" value="v01" required />
+  <label for="description">Description (no spaces, capitalized):</label>
+  <input type="text" id="description" placeholder="e.g. Yellow Submarine">
 
-    <button type="submit">Generate Filename</button>
-  </form>
+  <label for="id">Initials (2 letters):</label>
+  <input type="text" id="id" maxlength="2" placeholder="e.g. AD" value="ID">
 
-  <div id="output"></div>
+  <label for="version">Version (e.g. v01):</label>
+  <input type="text" id="version" value="v01">
 
-<script>
-  function generateFilename() {
-    const episode = document.getElementById('episode').value.trim();
-    const scene = document.getElementById('scene').value.trim();
-    const rawDescription = document.getElementById('description').value.trim();
-    const id = document.getElementById('id').value.trim().toUpperCase();
-    const version = document.getElementById('version').value.trim().toLowerCase();
+  <button onclick="generateFilename()">Generate Filename</button>
 
-    // Capitalize each word in the description and remove spaces
-    const description = rawDescription
-      .split(/\s+/)
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join('');
+  <div id="result"></div>
 
-    // Construct the filename
-    const filename = `${episode}_sc${scene}_${description}_${id}${version}`;
+  <script>
+    function generateFilename() {
+      const episode = document.getElementById('episode').value.trim();
+      const scene = document.getElementById('scene').value.trim();
+      const rawDescription = document.getElementById('description').value.trim();
+      const id = document.getElementById('id').value.trim().toUpperCase();
+      const version = document.getElementById('version').value.trim().toLowerCase();
 
-    // Display the result
-    document.getElementById('result').textContent = `Filename: ${filename}`;
-  }
-</script>
+      // Capitalize each word in the description and remove spaces
+      const description = rawDescription
+        .split(/\s+/)
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join('');
+
+      const filename = `${episode}_sc${scene}_${description}_${id}${version}`;
+      document.getElementById('result').textContent = `Filename: ${filename}`;
+    }
+  </script>
+
 </body>
 </html>
