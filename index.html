@@ -85,27 +85,26 @@
 
   <div id="output"></div>
 
-  <script>
-    const form = document.getElementById("nameForm");
-    const output = document.getElementById("output");
+<script>
+  function generateFilename() {
+    const episode = document.getElementById('episode').value.trim();
+    const scene = document.getElementById('scene').value.trim();
+    const rawDescription = document.getElementById('description').value.trim();
+    const id = document.getElementById('id').value.trim().toUpperCase();
+    const version = document.getElementById('version').value.trim().toLowerCase();
 
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
+    // Capitalize each word in the description and remove spaces
+    const description = rawDescription
+      .split(/\s+/)
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join('');
 
-      const episode = document.getElementById("episode").value.trim();
-      const scene = document.getElementById("scene").value.trim();
-      const description = document.getElementById("description").value.trim().replace(/\s+/g, '');
-      const id = document.getElementById("id").value.trim().toUpperCase();
-      const version = document.getElementById("version").value.trim();
+    // Construct the filename
+    const filename = `${episode}_sc${scene}_${description}_${id}${version}`;
 
-      if (!episode || !scene || !description || !id || !version) {
-        output.textContent = "Please fill in all fields.";
-        return;
-      }
-
-      const filename = `${episode}_sc${scene}_${description}_${id}${version}`;
-      output.textContent = filename;
-    });
-  </script>
+    // Display the result
+    document.getElementById('result').textContent = `Filename: ${filename}`;
+  }
+</script>
 </body>
 </html>
