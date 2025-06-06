@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Filename Generator</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f8f8f8;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    #output {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      background: #fff;
+      padding: 10px;
+      border: 1px dashed #888;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      background: #007acc;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #005fa3;
+    }
+  </style>
+</head>
+<body>
+  <h2>Filename Generator</h2>
+  <form id="nameForm">
+    <label for="episode">Episode Number (4 digits)</label>
+    <input type="text" id="episode" maxlength="4" required />
+
+    <label for="scene">Scene Number (2 digits)</label>
+    <input type="text" id="scene" maxlength="2" required />
+
+    <label for="description">Description (no spaces, capitalized)</label>
+    <input type="text" id="description" required />
+
+    <label for="id">Initials</label>
+    <input type="text" id="id" maxlength="2" value="ID" required />
+
+    <label for="version">Version (e.g. v01)</label>
+    <input type="text" id="version" value="v01" required />
+
+    <button type="submit">Generate Filename</button>
+  </form>
+
+  <div id="output"></div>
+
+  <script>
+    const form = document.getElementById("nameForm");
+    const output = document.getElementById("output");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const episode = document.getElementById("episode").value.trim();
+      const scene = document.getElementById("scene").value.trim();
+      const description = document.getElementById("description").value.trim().replace(/\s+/g, '');
+      const id = document.getElementById("id").value.trim().toUpperCase();
+      const version = document.getElementById("version").value.trim();
+
+      if (!episode || !scene || !description || !id || !version) {
+        output.textContent = "Please fill in all fields.";
+        return;
+      }
+
+      const filename = `${episode}_sc${scene}_${description}_${id}${version}`;
+      output.textContent = filename;
+    });
+  </script>
+</body>
+</html>
